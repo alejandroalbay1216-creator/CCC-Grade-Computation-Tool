@@ -1,5 +1,13 @@
 CREATE DATABASE IF NOT EXISTS college_grading_system CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE college_grading_system;
+CREATE TABLE IF NOT EXISTS grade_sessions (
+  session_id VARCHAR(128) NOT NULL,
+  session_data MEDIUMBLOB NOT NULL,
+  expires_at BIGINT UNSIGNED NOT NULL,
+  PRIMARY KEY (session_id),
+  KEY idx_grade_sessions_expires (expires_at)
+) ENGINE=InnoDB;
+
 CREATE TABLE IF NOT EXISTS grade_records (
   id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   student_name VARCHAR(150) NOT NULL,
