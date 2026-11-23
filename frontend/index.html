@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#126b9a">
+  <title>City College of Calamba | Grade Computation</title>
+  <link rel="stylesheet" href="assets/css/style.css?v=3">
+</head>
+<body>
+  <main class="form dashboard">
+    <header class="page-header">
+      <p class="eyebrow">City College of Calamba</p>
+      <h1>Grade Computation Tool</h1>
+      <p class="intro" id="pageIntro">Please wait while your account is verified.</p>
+      <div class="session-bar" id="sessionBar" hidden>
+        <span id="currentUser"></span>
+        <button type="button" class="secondary small" id="logoutButton">Sign Out</button>
+      </div>
+    </header>
+
+    <div class="dashboard-grid">
+      <section class="grade-entry admin-only" id="gradeEntry" aria-labelledby="entryTitle" hidden>
+        <h2 id="entryTitle">Student Grades</h2>
+        <p class="section-intro">For each term, enter the grade directly or compute it from activity scores (Auxiliary 20%, Minor Activity 40%, Major Activity 40%). Term scores contribute 30% Prelim, 30% Midterm, and 40% Final.</p>
+        <form id="gradeForm">
+          <input type="hidden" id="recordId">
+          <div class="input-grid">
+            <div class="field field-wide">
+              <label for="StudentName">Student Name</label>
+              <input type="text" id="StudentName" name="student_name" autocomplete="name" required maxlength="150">
+            </div>
+            <div class="field field-wide">
+              <label for="StudentID">Student ID</label>
+              <input type="text" id="StudentID" name="student_id" autocomplete="off" required maxlength="50">
+            </div>
+          </div>
+          <div id="gradeActivityInputs" class="grade-activity-inputs" aria-label="Official grade activity scores"></div>
+          <input type="hidden" id="PrelimGrade" name="prelim_grade">
+          <input type="hidden" id="MidtermGrade" name="midterm_grade">
+          <input type="hidden" id="FinalGradeInput" name="final_grade">
+          <div class="form-actions">
+            <button type="submit" id="saveButton">Save Grade</button>
+            <button type="button" id="cancelEdit" class="secondary" hidden>Cancel Edit</button>
+          </div>
+          <p id="status" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section class="grade-result" id="gradeResult" aria-labelledby="resultTitle" hidden>
+        <h2 id="resultTitle">Grade Result</h2>
+        <p class="section-intro" id="studentPrivacyNote" hidden>Your account can only access your own grade record.</p>
+        <p id="studentGradeMessage" role="status" hidden></p>
+        <dl class="result-list">
+          <div><dt>Student Name</dt><dd id="studentname">-</dd></div>
+          <div><dt>Student ID</dt><dd id="studentid">-</dd></div>
+          <div class="result-highlight"><dt>Computed Grade</dt><dd id="finalGrade">-</dd></div>
+          <div><dt>Equivalent Grade</dt><dd id="averageGrade">-</dd></div>
+          <div><dt>Remarks</dt><dd id="remarks">-</dd></div>
+        </dl>
+        <div id="gradeBreakdownPanel" class="grade-breakdown-panel" hidden>
+          <h3>Activity Breakdown</h3>
+          <div id="gradeBreakdown"></div>
+        </div>
+        <div class="qr-panel">
+          <h3>Share Result</h3>
+          <p>Sign-in is required to view a result.</p>
+          <div id="qrcode" aria-label="QR code for the saved result"></div>
+        </div>
+      </section>
+
+      <section id="studentCalculationsSection" aria-labelledby="studentCalculationsTitle" hidden>
+        <h2 id="studentCalculationsTitle">My Grade Calculations</h2>
+        <p class="section-intro">Calculations are saved to your account. You and administrators can view them; other student accounts cannot. They do not change official grade records.</p>
+        <form id="studentCalculationForm">
+          <div class="field field-wide">
+            <label for="calculationName">Calculation Name</label>
+            <input id="calculationName" name="calculation_name" required maxlength="100" placeholder="For example, Mathematics">
+          </div>
+          <p class="section-intro">Enter each term grade directly, or choose activity scores (Auxiliary 20%, Minor Activity 40%, Major Activity 40%). Add multiple scores when needed; term weights are 30%, 30%, and 40%.</p>
+          <div id="calculationActivityInputs" class="grade-activity-inputs" aria-label="Private calculation activity scores"></div>
+          <input type="hidden" id="calculationPrelim" name="prelim_grade">
+          <input type="hidden" id="calculationMidterm" name="midterm_grade">
+          <input type="hidden" id="calculationFinal" name="final_grade">
+          <div class="form-actions"><button type="submit" id="saveCalculationButton">Save Calculation</button></div>
+          <p id="calculationStatus" role="status" aria-live="polite"></p>
+        </form>
+        <div class="table-wrap" role="region" aria-label="My saved grade calculations" tabindex="0">
+          <table>
+            <thead>
+              <tr><th scope="col">Name</th><th scope="col">Prelim</th><th scope="col">Midterm</th><th scope="col">Final</th><th scope="col">Computed</th><th scope="col">Equivalent</th><th scope="col">Remarks</th><th scope="col">Breakdown</th><th scope="col">Saved</th><th scope="col">Actions</th></tr>
+            </thead>
+            <tbody id="studentCalculationsBody"><tr><td colspan="10">Loading your calculations…</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <section class="records admin-only" id="recordsSection" aria-labelledby="recordsTitle" hidden>
+      <div class="records-heading">
+        <div>
+          <h2 id="recordsTitle">All Saved Grade Records</h2>
+          <p class="section-intro">Administrator view: review, update, and remove student records.</p>
+        </div>
+      </div>
+      <div class="table-wrap" role="region" aria-label="All saved grade records" tabindex="0">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Student</th>
+              <th scope="col">ID</th>
+              <th scope="col">Prelim</th>
+              <th scope="col">Midterm</th>
+              <th scope="col">Final</th>
+              <th scope="col">Computed</th>
+              <th scope="col">Equivalent</th>
+              <th scope="col">Remarks</th>
+              <th scope="col">Breakdown</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="recordsBody">
+            <tr><td colspan="10">Loading records…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="accounts admin-only" id="accountsSection" aria-labelledby="accountsTitle" hidden>
+      <h2 id="accountsTitle">Student Login Accounts</h2>
+      <p class="section-intro">Student status refreshes every 5 seconds. Online means the student has recently interacted with the system; inactive or hidden sessions become Offline. Enable or reset official grade access only after verifying the student's identity in person.</p>
+      <form id="studentAccountForm">
+        <div class="field">
+          <label for="accountStudentID">Student ID</label>
+          <input id="accountStudentID" name="student_id" required maxlength="50" autocomplete="off">
+        </div>
+        <div class="form-actions"><button type="submit">Enable / Reset Student Registration</button></div>
+        <p id="accountStatus" role="status" aria-live="polite"></p>
+      </form>
+      <div id="registrationApprovalPanel" class="registration-approval-panel" hidden>
+        <p id="registrationApprovalMessage"></p>
+        <p id="registrationApprovalExpiry"></p>
+      </div>
+      <div class="student-directory-layout">
+        <aside class="student-directory-sidebar" aria-labelledby="studentDirectoryTitle">
+          <h3 id="studentDirectoryTitle">Find a Student</h3>
+          <div class="field">
+            <label for="studentSearch">Search by name, username, or Student ID</label>
+            <input id="studentSearch" type="search" autocomplete="off" placeholder="Type a student’s details">
+          </div>
+          <div class="student-status-filters" role="group" aria-label="Filter students by status">
+            <button type="button" class="secondary small active" data-status-filter="all" aria-pressed="true">All <span id="allStudentCount">0</span></button>
+            <button type="button" class="secondary small" data-status-filter="Online" aria-pressed="false">Online <span id="onlineStudentCount">0</span></button>
+            <button type="button" class="secondary small" data-status-filter="Offline" aria-pressed="false">Offline <span id="offlineStudentCount">0</span></button>
+          </div>
+          <ul id="studentDirectoryResults" class="student-directory-results" aria-label="Matching student accounts"></ul>
+          <p id="studentDirectoryMessage" class="directory-message" role="status" aria-live="polite">Select a student to view details.</p>
+          <div id="studentDetail" class="student-detail-card" hidden>
+            <h3 id="studentDetailName"></h3>
+            <dl id="studentDetailFields" class="student-detail-list"></dl>
+          </div>
+        </aside>
+        <div class="table-wrap" role="region" aria-label="Student login accounts" tabindex="0">
+          <table>
+            <thead><tr><th scope="col">User ID</th><th scope="col">Username</th><th scope="col">First Name</th><th scope="col">Middle Name</th><th scope="col">Last Name</th><th scope="col">Student ID</th><th scope="col">Year Level</th><th scope="col">Department</th><th scope="col">Account Created</th><th scope="col">Status</th></tr></thead>
+            <tbody id="accountsBody"><tr><td colspan="10">Loading student accounts…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="records admin-only" id="allStudentCalculationsSection" aria-labelledby="allStudentCalculationsTitle" hidden>
+      <h2 id="allStudentCalculationsTitle">All Student Grade Calculations</h2>
+      <p class="section-intro">Saved student calculations appear here automatically every 10 seconds. These are separate from official grade records.</p>
+      <div class="table-wrap" role="region" aria-label="All student grade calculations" tabindex="0">
+        <table>
+          <thead>
+            <tr><th scope="col">Student</th><th scope="col">Username</th><th scope="col">Calculation</th><th scope="col">Prelim</th><th scope="col">Midterm</th><th scope="col">Final</th><th scope="col">Computed</th><th scope="col">Equivalent</th><th scope="col">Remarks</th><th scope="col">Breakdown</th><th scope="col">Saved</th></tr>
+          </thead>
+          <tbody id="allStudentCalculationsBody"><tr><td colspan="11">Loading student calculations…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="passwordSection" aria-labelledby="passwordTitle" hidden>
+      <h2 id="passwordTitle">Account Settings</h2>
+      <form id="passwordForm">
+        <div class="input-grid">
+          <div class="field field-wide">
+            <label id="currentCredentialLabel" for="currentPassword">Current Password</label>
+            <input id="currentPassword" name="current_password" type="password" required autocomplete="current-password">
+          </div>
+          <div class="field field-wide">
+            <label id="newCredentialLabel" for="newPassword">New Password (8–72 characters)</label>
+            <input id="newPassword" name="new_password" type="password" required minlength="8" maxlength="72" autocomplete="new-password">
+          </div>
+        </div>
+        <div class="form-actions"><button type="submit">Change Password</button></div>
+        <p id="passwordStatus" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <footer><em>City College of Calamba · Grade Computation System</em></footer>
+  </main>
+  <script src="assets/js/app.js?v=3"></script>
+</body>
+</html>

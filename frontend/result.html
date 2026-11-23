@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grade Result | City College of Calamba</title>
+  <link rel="stylesheet" href="assets/css/style.css?v=3">
+</head>
+<body>
+  <main class="form">
+    <header class="page-header">
+      <p class="eyebrow">City College of Calamba</p>
+      <h1>Grade Result</h1>
+    </header>
+    <p id="resultStatus" role="status" aria-live="polite">Loading result…</p>
+    <section aria-label="Student grade details">
+      <p>Student Name: <span id="studentName">-</span></p>
+      <p>Student ID: <span id="studentId">-</span></p>
+      <p>Prelim Grade: <span id="prelimGrade">-</span></p>
+      <p>Midterm Grade: <span id="midtermGrade">-</span></p>
+      <p>Final Grade: <span id="finalInput">-</span></p>
+      <p>Computed Grade: <span id="computedGrade">-</span></p>
+      <p>Equivalent Grade: <span id="averageGrade">-</span></p>
+      <p>Remarks: <span id="remarks">-</span></p>
+      <div id="resultBreakdownPanel" class="grade-breakdown-panel" hidden>
+        <h2>Activity Breakdown</h2>
+        <div id="resultBreakdown"></div>
+      </div>
+    </section>
+    <a href="index.html">Back to my dashboard</a>
+  </main>
+  <script src="assets/js/result.js?v=2"></script>
+</body>
+</html>

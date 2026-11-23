@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#126b9a">
+  <title>Administrator Sign In | City College of Calamba</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-login-role="admin">
+  <main class="form login-card">
+    <header class="page-header">
+      <p class="eyebrow">City College of Calamba</p>
+      <h1>Administrator Sign In</h1>
+      <p class="intro">Authorized administrators can manage student grades and accounts.</p>
+    </header>
+    <section aria-labelledby="adminLoginTitle">
+      <h2 id="adminLoginTitle">Admin Login</h2>
+      <form id="loginForm">
+        <div class="field">
+          <label for="adminPin">Admin PIN</label>
+          <input id="adminPin" name="admin_pin" type="password" required maxlength="72" autocomplete="current-password">
+        </div>
+        <div class="form-actions"><button type="submit" id="loginButton">Sign In</button></div>
+        <p id="loginStatus" role="status" aria-live="polite"></p>
+      </form>
+      <p class="login-help"><a href="login.html">Back to Student Login</a></p>
+    </section>
+    <footer><em>City College of Calamba · Grade Computation System</em></footer>
+  </main>
+  <script src="assets/js/login.js"></script>
+</body>
+</html>

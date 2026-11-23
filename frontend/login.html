@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#126b9a">
+  <title>Sign In | City College of Calamba</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-login-role="student">
+  <main class="form login-card">
+    <header class="page-header">
+      <p class="eyebrow">City College of Calamba</p>
+      <h1>Grade Computation Tool</h1>
+      <p class="intro">Sign in with your username to access your private calculations and any official grade record linked to your account.</p>
+    </header>
+
+    <section id="loginSection" aria-labelledby="loginTitle">
+      <h2 id="loginTitle">Sign In</h2>
+      <form id="loginForm">
+        <div class="field">
+          <label for="username">Username</label>
+          <input id="username" name="username" required autocomplete="username" maxlength="50">
+        </div>
+        <div class="field">
+          <label for="loginPassword">Password</label>
+          <input id="loginPassword" name="password" type="password" required autocomplete="current-password">
+        </div>
+        <div class="form-actions">
+          <button type="submit" id="loginButton">Sign In</button>
+        </div>
+        <p id="loginStatus" role="status" aria-live="polite"></p>
+      </form>
+      <div id="studentRegistrationLink">
+        <p class="login-help">Create an account without admin approval. Students can view only their own calculations; administrators can review all saved calculations. These are not official grade records.</p>
+        <button type="button" class="secondary" id="showRegistration">Create Student Account</button>
+        <p class="login-help"><a href="admin-login.html">Administrator login</a></p>
+      </div>
+    </section>
+
+    <section id="registrationSection" aria-labelledby="registrationTitle" hidden>
+      <h2 id="registrationTitle">Create Student Account</h2>
+      <p class="section-intro">Create your own account. Your Student ID is not verified against official student records. Only you and administrators can view calculations saved to this account.</p>
+      <form id="registrationForm">
+        <div class="field">
+          <label for="registerUsername">Username</label>
+          <input id="registerUsername" name="username" required maxlength="50" autocomplete="username">
+        </div>
+        <div class="field">
+          <label for="registerFirstName">First Name</label>
+          <input id="registerFirstName" name="first_name" required maxlength="60" autocomplete="given-name" data-name-input pattern="[^0-9]*" title="Numbers are not allowed in names.">
+        </div>
+        <div class="field">
+          <label for="registerMiddleName">Middle Name (optional)</label>
+          <input id="registerMiddleName" name="middle_name" maxlength="60" autocomplete="additional-name" data-name-input pattern="[^0-9]*" title="Numbers are not allowed in names.">
+        </div>
+        <div class="field">
+          <label for="registerLastName">Last Name</label>
+          <input id="registerLastName" name="last_name" required maxlength="60" autocomplete="family-name" data-name-input pattern="[^0-9]*" title="Numbers are not allowed in names.">
+        </div>
+        <div class="field">
+          <label for="registerStudentID">Student ID</label>
+          <input id="registerStudentID" name="student_id" type="text" inputmode="numeric" pattern="[0-9]+" title="Student ID must contain numbers only." required maxlength="50" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="registerYearLevel">Year Level</label>
+          <select id="registerYearLevel" name="year_level" required>
+            <option value="" selected disabled>Select year level</option>
+            <option value="1st Year">1st Year</option>
+            <option value="2nd Year">2nd Year</option>
+            <option value="3rd Year">3rd Year</option>
+            <option value="4th Year">4th Year</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="registerDepartment">Department</label>
+          <select id="registerDepartment" name="department" required>
+            <option value="" selected disabled>Select department</option>
+            <option value="Teacher Education">Teacher Education</option>
+            <option value="Arts and Sciences">Arts and Sciences</option>
+            <option value="Business and Accounting">Business and Accounting</option>
+            <option value="Computing and Informatics">Computing and Informatics</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="registerPassword">Choose Password (8–72 characters)</label>
+          <div class="password-control">
+            <input id="registerPassword" name="password" type="password" required minlength="8" maxlength="72" autocomplete="new-password">
+            <button type="button" class="secondary small password-toggle" id="toggleRegisterPassword" aria-label="Show password" aria-pressed="false">Show</button>
+          </div>
+        </div>
+        <div class="form-actions"><button type="submit" id="registerButton">Create Student Account</button></div>
+        <p id="registrationStatus" role="status" aria-live="polite"></p>
+      </form>
+      <button type="button" class="secondary" id="backToLogin">Back to Sign In</button>
+    </section>
+    <footer><em>City College of Calamba · Grade Computation System</em></footer>
+  </main>
+  <script src="assets/js/login.js?v=3"></script>
+</body>
+</html>
