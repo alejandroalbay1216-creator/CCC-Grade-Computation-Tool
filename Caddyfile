@@ -1,0 +1,23 @@
+:{$PORT:80} {
+    root * /app
+    encode zstd gzip
+
+    @api path /backend/public/api/grades.php /backend/public/api/auth.php /backend/public/api/accounts.php /backend/public/api/presence.php /backend/public/api/calculations.php
+    handle @api {
+        php_server
+    }
+
+    @frontend path /frontend /frontend/*
+    handle @frontend {
+        file_server
+    }
+
+    @root path /
+    handle @root {
+        redir /frontend/ 302
+    }
+
+    handle {
+        respond "Not found" 404
+    }
+}
