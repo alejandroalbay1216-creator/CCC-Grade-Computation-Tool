@@ -209,7 +209,7 @@ try {
         }
         $_SESSION = [];
         session_destroy();
-        $secure = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
+        $secure = authRequestIsSecure();
         setcookie(session_name(), '', time() - 3600, '/', '', $secure, true);
         authRespond(200, ['message' => 'Signed out.']);
     }
