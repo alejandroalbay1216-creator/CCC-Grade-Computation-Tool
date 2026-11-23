@@ -1,0 +1,25 @@
+.git/
+**/.git/
+.env
+.env.*
+**/.env
+**/.env.*
+node_modules/
+**/node_modules/
+vendor/
+**/vendor/
+.vercel/
+.dist/
+dist/
+build/
+coverage/
+backend/database/
+backend/scripts/
+COLLEGE GRADING SYSTEM/
+*.log
+*.sql.gz
+*.dump
+*.bak
+*.backup
+*.sqlite
+*.sqlite3
