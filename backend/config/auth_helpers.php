@@ -1,21 +1,36 @@
 <?php
 declare(strict_types=1);
 
+require_once __DIR__ . '/database_session_handler.php';
+
+function authRequestIsSecure(): bool
+{
+    if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') return true;
+    $forwardedProtocol = strtolower(trim(explode(',', (string)($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? ''))[0]));
+    return $forwardedProtocol === 'https';
+}
+
 function authStartSession(): void
 {
     if (session_status() === PHP_SESSION_ACTIVE) return;
     session_name('CCC_GRADE_SESSION');
     ini_set('session.use_strict_mode', '1');
     ini_set('session.use_only_cookies', '1');
-    $secure = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
+    session_set_save_handler(new DatabaseSessionHandler(), true);
+    $secure = authRequestIsSecure();
     session_set_cookie_params(0, '/', '', $secure, true);
-    session_start();
+    try {
+        if (!session_start()) authRespond(503, ['error' => 'Session storage is unavailable. Check the database configuration and schema.']);
+    } catch (Throwable $error) {
+        error_log('Unable to start database-backed session: ' . $error->getMessage());
+        authRespond(503, ['error' => 'Session storage is unavailable. Check the database configuration and schema.']);
+    }
     authSetSessionCookie();
 }
 
 function authSetSessionCookie(): void
 {
-    $secure = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
+    $secure = authRequestIsSecure();
     $cookie = session_name() . '=' . rawurlencode(session_id()) . '; Path=/; HttpOnly; SameSite=Lax';
     if ($secure) $cookie .= '; Secure';
     header('Set-Cookie: ' . $cookie, true);
